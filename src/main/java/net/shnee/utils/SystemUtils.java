@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -16,9 +18,8 @@ public class SystemUtils {
 
     static public String runCommand(final String command) throws Exception {
         try {
-            ProcessBuilder procBuilder = new ProcessBuilder(SystemUtils.
-                                                            splitString(
-                                                                    command));
+            List<String> list = SystemUtils.splitString(command);
+            ProcessBuilder procBuilder = new ProcessBuilder(list);
             Process proc = procBuilder.start();
 
             InputStream is = proc.getInputStream();
@@ -54,8 +55,18 @@ public class SystemUtils {
         }
     }
 
+    /**
+     * Will split the given string around ' '. It will keep substrings in quotes
+     * in tact.
+     * @param string The string to be split into substrings.
+     * @return A list of the substring tokens.
+     */
     static private List<String> splitString(final String string) {
-        return Arrays.asList(string.split(string));
+        List<String> list = new ArrayList<>();
+        Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(string);
+        while (m.find()) {
+            list.add(m.group(1).replace("\"", ""));
+        }
+        return list;
     }
-
 }
