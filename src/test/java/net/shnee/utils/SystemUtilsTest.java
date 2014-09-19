@@ -1,4 +1,5 @@
 package net.shnee.utils;
+// TODO Move the utlility classes into it's own projects
 
 import java.io.PrintWriter;
 import org.junit.Test;
