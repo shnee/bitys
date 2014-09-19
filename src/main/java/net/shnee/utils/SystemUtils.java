@@ -12,10 +12,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * A utility class that supplies functions dealing with the host system.
  */
 public class SystemUtils {
 
+    /**
+     * Will run a given command on the host system.
+     * @param command A string containing the command to be run, including it's
+     *                arguments.
+     * @return Returns the output of the command in a String.
+     * @throws Exception
+     */
     static public String runCommand(final String command) throws Exception {
         try {
             List<String> list = SystemUtils.splitString(command);
