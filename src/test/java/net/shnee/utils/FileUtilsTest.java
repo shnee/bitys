@@ -1,35 +1,15 @@
 package net.shnee.utils;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author shnee
+ * Unit test for the FileUtils class.
  */
 public class FileUtilsTest {
-    
+
     public FileUtilsTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -37,12 +17,20 @@ public class FileUtilsTest {
      */
     @Test
     public void testFileExist() {
-        System.out.println("fileExist");
-        String file = "";
-        boolean expResult = false;
-        boolean result = FileUtils.fileExist(file);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LoggerFactory.getLogger(FileUtilsTest.class).
+                      trace("FileUtilsTest.testFileExists");
+        String file = "yay.txt";
+        assertFalse(FileUtils.fileExists(file));
+        try {
+            SystemUtils.runCommand("touch yay.txt");
+            assertTrue(FileUtils.fileExists(file));
+            SystemUtils.runCommand("rm yay.txt");
+            assertFalse(FileUtils.fileExists(file));
+        } catch (Exception ex) {
+            LoggerFactory.getLogger(FileUtilsTest.class).
+                          error("Error running testFileExist" +
+                                ex.getMessage());
+            fail("Exception thrown.");
+        }
     }
 }
