@@ -16,13 +16,13 @@ public class SystemUtilsTest {
      * on a unix based operating system.
      */
     @Test
-    public void testRunCommand() throws Exception {
+    public void testRunCommandHappy() throws Exception {
         /* TODO Add a check to make sure the current operating system is a unix
          *      based one. */
 
         
         LoggerFactory.getLogger(SystemUtilsTest.class).
-                      trace("SystemUtilsTest.testRunCommand");
+                      trace("SystemUtilsTest.testRunCommandHappy");
        
         /* Create a script that will create a text file with the text 'yay' and
          * then output the text in the file. */
@@ -45,5 +45,12 @@ public class SystemUtilsTest {
 
         assertFalse(FileUtils.fileExists("script.sh"));
         assertFalse(FileUtils.fileExists("yay.txt"));
+    }
+    
+    @Test (expected=Exception.class)
+    public void testRunCommandFail() throws Exception {
+        LoggerFactory.getLogger(SystemUtilsTest.class).
+                      trace("SystemUtilsTest.testRunCommandFail");
+        SystemUtils.runCommand("cp doesnt_exists.txt yay.txt");
     }
 }
