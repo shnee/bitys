@@ -12,7 +12,7 @@ public class FileUtils {
      * @return Returns true if the file exists. Returns false if the path points
      *         to a directory or the file does not exists.
      */
-    static public boolean fileExist(final String file) {
+    static public boolean fileExists(final String file) {
         File f = new File(file);
         return f.exists() && !f.isDirectory();
     }
