@@ -1,41 +1,65 @@
 package net.shnee.bitys.model;
 
+import com.sun.istack.internal.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 
+ * Represents a real world sport. Each sport has a unique identifier and a name.
  */
 @Entity
 @Table(name="Sports")
-public class Sport implements java.io.Serializable {
-    @Id @GeneratedValue
-    private Integer id;
+public class Sport extends GenericEntity implements java.io.Serializable {
     
-    @Column(length=50)
+    /**
+     * Name of the sport.
+     */
+    @Column(length=50) @NotNull
     private String  name;
     
+    /**
+     * Create a new sport with an empty string for the name and -1 for the id.
+     */
     public Sport() {
         this(-1, "");
     }
     
+    /**
+     * Creates a new sport with the given name and an id of -1.
+     * @param name Name for the Sport.
+     */
     public Sport(String name) {
         this(-1, name);
     }
     
+    /**
+     * Creates a new sport with the given id and name.
+     * @param id   Unique identifier of the Sport.
+     * @param name Name for the Sport.
+     */
     public Sport(final Integer id, final String name) {
-        this.id   = id;
+        super(id);
         this.name = name;
     }
     
-    public Integer getId() { return this.id; }
+    /**
+     * Converts Sport to a String.
+     * @return Returns a String representation of Sport.
+     */
+    public String toString() {
+        return "Sport: id=" + this.getId() + ", name=" + this.name;
+    }
     
-    public void setId(Integer id) { this.id = id; }
-    
+    /**
+     * name getter.
+     * @return Returns the name of the Sport.
+     */
     public String getName() { return this.name; }
     
+    /**
+     * name setter.
+     * @param name New name for Sport.
+     */
     public void setName(String name) { this.name = name; }
 }
