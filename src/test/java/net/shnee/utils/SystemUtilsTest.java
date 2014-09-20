@@ -21,8 +21,9 @@ public class SystemUtilsTest {
          *      based one. */
 
         
-        LoggerFactory.getLogger(SystemUtilsTest.class).
-                      trace("SystemUtilsTest.testRunCommandHappy");
+        LoggerFactory.getLogger("utils." + 
+                                SystemUtilsTest.class.getSimpleName()).
+                      debug("SystemUtilsTest.testRunCommandHappy");
        
         /* Create a script that will create a text file with the text 'yay' and
          * then output the text in the file. */
@@ -49,8 +50,9 @@ public class SystemUtilsTest {
     
     @Test (expected=Exception.class)
     public void testRunCommandFail() throws Exception {
-        LoggerFactory.getLogger(SystemUtilsTest.class).
-                      trace("SystemUtilsTest.testRunCommandFail");
+        LoggerFactory.getLogger("utils." + 
+                                SystemUtilsTest.class.getSimpleName()).
+                      debug("SystemUtilsTest.testRunCommandFail");
         SystemUtils.runCommand("cp doesnt_exists.txt yay.txt");
     }
 }

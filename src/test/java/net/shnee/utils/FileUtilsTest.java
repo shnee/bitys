@@ -17,8 +17,8 @@ public class FileUtilsTest {
      */
     @Test
     public void testFileExist() {
-        LoggerFactory.getLogger(FileUtilsTest.class).
-                      trace("FileUtilsTest.testFileExists");
+        LoggerFactory.getLogger("utils." + FileUtilsTest.class.getSimpleName()).
+                      debug("FileUtilsTest.testFileExists");
         String file = "yay.txt";
         assertFalse(FileUtils.fileExists(file));
         try {
@@ -27,7 +27,8 @@ public class FileUtilsTest {
             SystemUtils.runCommand("rm yay.txt");
             assertFalse(FileUtils.fileExists(file));
         } catch (Exception ex) {
-            LoggerFactory.getLogger(FileUtilsTest.class).
+            LoggerFactory.getLogger("utils." +
+                                    FileUtilsTest.class.getSimpleName()).
                           error("Error running testFileExist" +
                                 ex.getMessage());
             fail("Exception thrown.");
