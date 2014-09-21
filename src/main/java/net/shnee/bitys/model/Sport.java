@@ -1,6 +1,5 @@
 package net.shnee.bitys.model;
 
-import com.sun.istack.internal.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,7 +14,7 @@ public class Sport extends GenericEntity implements java.io.Serializable {
     /**
      * Name of the sport.
      */
-    @Column(length=50) @NotNull
+    @Column(length=50, nullable=false)
     private String  name;
     
     /**

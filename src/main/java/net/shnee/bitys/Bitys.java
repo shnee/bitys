@@ -1,6 +1,7 @@
 package net.shnee.bitys;
 
 import java.util.Properties;
+import net.shnee.bitys.db.Db;
 import net.shnee.bitys.model.Sport;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,19 +23,14 @@ public class Bitys
         Logger log = LoggerFactory.getLogger("Bitys");
         log.info("Word to your mother...");
         
-        Configuration configuration = new Configuration(); 
-        configuration.configure(); 
-         
-        Properties properties = configuration.getProperties();
-        ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().
-                                                  applySettings(properties).
-                                                  buildServiceRegistry();
-        SessionFactory sessionFactory = configuration.
-                                           buildSessionFactory(serviceRegistry);
+        Db db = Db.getInstance();
+        
         Session session = null;
         Transaction tx = null;
         try {
-            session = sessionFactory.openSession();
+            session = db.createSession();
+            Sport sprt = new Sport(1, "Testing");
+            session.save(sprt);
             tx = session.beginTransaction();
             Sport sport = new Sport(1, "Soccer");
             session.save(sport);
