@@ -4,13 +4,15 @@
         class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                %d{HH:mm:ss.SSS} [%thread] %-1level %logger{32} - %msg%n
             </pattern>
         </encoder>
     </appender>
 
-    <root level="TRACE">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
+
+    <logger name="org" level="OFF"/>
 
 </configuration>
