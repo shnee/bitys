@@ -4,17 +4,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+// TODO add unit test for GenericEntity
+
 /**
  * Shared code for all of the entities in the bitys model.
  */
 @MappedSuperclass
-abstract public class GenericEntity {
+abstract public class Entity {
 
     /**
      * Empty constructor. Assigns a negative value to id. The id of a saved
      * entity can never be negative.
      */
-    public GenericEntity() {
+    public Entity() {
         this(-1);
     }
 
@@ -22,7 +24,7 @@ abstract public class GenericEntity {
      * Creates a new entity with a given identifier.
      * @param id Identifier for newly created entity.
      */
-    public GenericEntity(Integer id) {
+    public Entity(Integer id) {
         this.id = id;
     }
 
@@ -46,4 +48,5 @@ abstract public class GenericEntity {
      *           when the entity is saved.
      */
     public void setId(Integer id) { this.id = id; }
+
 }
