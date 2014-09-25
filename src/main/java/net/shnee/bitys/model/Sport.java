@@ -1,5 +1,6 @@
 package net.shnee.bitys.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -41,6 +42,14 @@ public class Sport extends net.shnee.bitys.model.Entity
     public Sport(final Integer id, final String name) {
         super(id);
         this.name = name;
+    }
+
+    /**
+     * Get all saved Sport objects.
+     * @return Returns a list of all saved Sport objects.
+     */
+    public static List<Sport> getAll() {
+        return net.shnee.bitys.model.Entity.getAll(Sport.class);
     }
 
     public String toString() {
