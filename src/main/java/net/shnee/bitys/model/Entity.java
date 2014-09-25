@@ -1,10 +1,14 @@
 package net.shnee.bitys.model;
 
+import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-// TODO add unit test for GenericEntity
+import net.shnee.bitys.db.Db;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  * Shared code for all of the entities in the bitys model.
@@ -29,6 +33,31 @@ abstract public class Entity {
     }
 
     /**
+     * Return all saved objects of type type.
+     * @param <T>  Type of object to retrieve.
+     * @param type Type of object to retrieve.
+     * @return Reurns a list of saved objects of type type.
+     */
+    public static <T> List<T> getAll(Class<T> type) {
+        Session session = null;
+        Transaction tx  = null;
+        List<T> list    = null;
+        try {
+            session = Db.getInstance().createSession();
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from " + type.getName());
+            list = query.list();
+            tx.commit();
+        } catch(HibernateException ex) {
+            // TODO add logging statements
+            tx.rollback();
+        } finally {
+            if(session != null) { session.close(); }
+        }
+        return list;
+    }
+
+    /**
      * Unique identifier for an enitity. id is unique per entitity type and only
      * among those entities that have been saved.
      */
@@ -48,5 +77,10 @@ abstract public class Entity {
      *           when the entity is saved.
      */
     public void setId(Integer id) { this.id = id; }
+
+    protected String getPluralName() {
+        String pluralForm = this.getClass().getSimpleName() + "s";
+        return pluralForm;
+    }
 
 }
