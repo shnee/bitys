@@ -1,5 +1,6 @@
 package net.shnee.bitys.model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ import org.hibernate.Transaction;
  * Shared code for all of the entities in the bitys model.
  */
 @MappedSuperclass
-abstract public class Entity {
+abstract public class Entity implements Serializable {
 
     /**
      * Empty constructor. Assigns a negative value to id. The id of a saved
