@@ -18,6 +18,13 @@ import org.hibernate.Transaction;
 abstract public class Entity implements Serializable {
 
     /**
+     * Unique identifier for an enitity. id is unique per entitity type and only
+     * among those entities that have been saved.
+     */
+    @Id @GeneratedValue
+    private Integer id;
+
+    /**
      * Empty constructor. Assigns a negative value to id. The id of a saved
      * entity can never be negative.
      */
@@ -32,6 +39,8 @@ abstract public class Entity implements Serializable {
     public Entity(Integer id) {
         this.id = id;
     }
+
+    // TODO add method addAll that will save all objects in a collection
 
     /**
      * Return all saved objects of type type.
@@ -57,13 +66,6 @@ abstract public class Entity implements Serializable {
         }
         return list;
     }
-
-    /**
-     * Unique identifier for an enitity. id is unique per entitity type and only
-     * among those entities that have been saved.
-     */
-    @Id @GeneratedValue
-    private Integer id;
 
     /**
      * id getter.
