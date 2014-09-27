@@ -1,6 +1,7 @@
 package net.shnee.bitys.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -40,7 +41,28 @@ abstract public class Entity implements Serializable {
         this.id = id;
     }
 
-    // TODO add method addAll that will save all objects in a collection
+    /**
+     * Save or update all the objects in entities.
+     * @param <T>      Type of the objcts in entities.
+     * @param entities Objects to be saved or updated.
+     * @return Returns the number of objects saved or updated.
+     */
+    public static <T> Integer saveOrUpdateAll(Collection<T> entities) {
+        Integer numSaved = 0;
+        Session session = null;
+        Transaction tx  = null;
+
+        session = Db.getInstance().createSession();
+        tx = session.beginTransaction();
+        for(T entity : entities) {
+            session.saveOrUpdate(entity);
+            numSaved++;
+        }
+        tx.commit();
+        session.close();
+
+        return numSaved;
+    }
 
     /**
      * Return all saved objects of type type.
@@ -55,7 +77,7 @@ abstract public class Entity implements Serializable {
         try {
             session = Db.getInstance().createSession();
             tx = session.beginTransaction();
-            Query query = session.createQuery("from " + type.getName());
+            Query query = session.createQuery("FROM " + type.getName());
             list = query.list();
             tx.commit();
         } catch(HibernateException ex) {
@@ -65,6 +87,27 @@ abstract public class Entity implements Serializable {
             if(session != null) { session.close(); }
         }
         return list;
+    }
+
+    /**
+     * Remove all saved objects of type.
+     * @param <T>  Type of the objects to be deleted.
+     * @param type Type of the objects to be deleted.
+     * @return Returns the number of objects deleted.
+     */
+    public static <T> Integer removeAll(Class<T> type) {
+        Session session = null;
+        Transaction tx  = null;
+        Integer numActions;
+
+        session = Db.getInstance().createSession();
+        tx = session.beginTransaction();
+        Query query = session.createQuery("DELETE FROM " + type.getName());
+        numActions = query.executeUpdate();
+        tx.commit();
+        session.close();
+
+        return numActions;
     }
 
     /**
@@ -80,10 +123,5 @@ abstract public class Entity implements Serializable {
      *           when the entity is saved.
      */
     public void setId(Integer id) { this.id = id; }
-
-    protected String getPluralName() {
-        String pluralForm = this.getClass().getSimpleName() + "s";
-        return pluralForm;
-    }
 
 }

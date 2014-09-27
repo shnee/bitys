@@ -38,9 +38,13 @@ public class Sport extends NamedEntity implements Serializable {
     public static List<Sport> getAll() {
         return net.shnee.bitys.model.Entity.getAll(Sport.class);
     }
-    
+
     public static List<Sport> getByName(String name) {
         return NamedEntity.getByName(Sport.class, name);
+    }
+
+    public static Integer removeAll() {
+        return net.shnee.bitys.model.Entity.removeAll(Sport.class);
     }
 
     /**
@@ -49,6 +53,14 @@ public class Sport extends NamedEntity implements Serializable {
      */
     public String toStringDetailed() {
         return "Sport: id=" + this.getId() + ", name=" + this.getName();
+    }
+
+    /**
+     * Get the plural form of the class.
+     * @return Returns the plural form of the class as a String.
+     */
+    public static String getPluralName() {
+        return Sport.class.getSimpleName() + "s";
     }
 
 }
