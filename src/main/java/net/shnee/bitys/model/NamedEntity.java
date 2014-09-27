@@ -1,10 +1,16 @@
 package net.shnee.bitys.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import net.shnee.bitys.db.Db;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
- *
+ * Models an entiry with a name.
  */
 @MappedSuperclass
 public class NamedEntity extends Entity {
@@ -50,5 +56,33 @@ public class NamedEntity extends Entity {
      * @param name New name for NamedEntity.
      */
     public void setName(String name) { this.name = name; }
+
+    /**
+     * Return all saved objects of type type with name name.
+     * @param <T>  Type of objects to retrieve.
+     * @param type Type of objects to retrieve.
+     * @param name Name of objects to retrieve.
+     * @return Reurns a list of saved objects of type type and name name.
+     */
+    public static <T> List<T> getByName(Class<T> type, String name) {
+        Session session = null;
+        Transaction tx  = null;
+        List<T> list    = null;
+        try {
+            session = Db.getInstance().createSession();
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from " + type.getName() +
+                                              " where name = :name");
+            query.setParameter("name", name);
+            list = query.list();
+            tx.commit();
+        } catch(HibernateException ex) {
+            // TODO add logging statements
+            tx.rollback();
+        } finally {
+            if(session != null) { session.close(); }
+        }
+        return list;
+    }
 
 }

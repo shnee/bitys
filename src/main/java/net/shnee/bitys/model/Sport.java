@@ -38,6 +38,10 @@ public class Sport extends NamedEntity implements Serializable {
     public static List<Sport> getAll() {
         return net.shnee.bitys.model.Entity.getAll(Sport.class);
     }
+    
+    public static List<Sport> getByName(String name) {
+        return NamedEntity.getByName(Sport.class, name);
+    }
 
     /**
      * java.lang.Object.toString() but with more details.
