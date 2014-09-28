@@ -3,10 +3,13 @@ package net.shnee.bitys.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import net.shnee.bitys.db.Db;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -124,4 +127,17 @@ abstract public class Entity implements Serializable {
      */
     public void setId(Integer id) { this.id = id; }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(13, 37).append(this.id).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Entity)) { return false; }
+        if (obj == this) { return true; }
+
+        Entity rhs = (Entity) obj;
+        return new EqualsBuilder().append(this.id, rhs.id).isEquals();
+    }
 }
