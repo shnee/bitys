@@ -3,7 +3,6 @@ package net.shnee.bitys.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -42,6 +41,32 @@ abstract public class Entity implements Serializable {
      */
     public Entity(Integer id) {
         this.id = id;
+    }
+  
+    /**
+     * Saves the given object.
+     * @param obj The object to be saved.
+     * @return Returns generated identifier. Returns -1 if there was an error.
+     */
+    public static Integer saveOrUpdate(Entity entity) {
+        Session session = null;
+        Transaction tx = null;
+        
+        try {
+            session = Db.getInstance().createSession();
+            tx = session.beginTransaction();
+            
+            session.saveOrUpdate(entity);
+            
+            tx.commit();
+        } catch(HibernateException ex) {
+            // TODO add logging statement
+            tx.rollback();
+            return -1;
+        } finally {
+            if(session != null) { session.close(); }
+        }
+        return entity.getId();
     }
 
     /**

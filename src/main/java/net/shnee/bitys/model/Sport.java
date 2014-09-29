@@ -31,6 +31,10 @@ public class Sport extends NamedEntity implements Serializable {
      */
     public Sport(Integer id, String name) { super(id, name); }
 
+    public Integer saveOrUpdate() {
+        return net.shnee.bitys.model.Entity.saveOrUpdate(this);
+    }
+
     /**
      * Get all saved Sport objects.
      * @return Returns a list of all saved Sport objects.
