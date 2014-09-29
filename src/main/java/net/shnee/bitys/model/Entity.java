@@ -181,6 +181,20 @@ abstract public class Entity implements Serializable {
     public void setId(Integer id) { this.id = id; }
 
     @Override
+    public String toString() {
+        return "Entity: id=" + this.id;
+    }
+
+    /**
+     * This is a toString method with more details, including most of the
+     * private fields.
+     * @return Returns a detailed represention of the Entity as a String.
+     */
+    public String getDetailedString() {
+        return this.toString();
+    }
+
+    @Override
     public int hashCode() {
         return new HashCodeBuilder(13, 37).append(this.id).toHashCode();
     }
