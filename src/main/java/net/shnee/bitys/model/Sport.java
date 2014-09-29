@@ -71,11 +71,8 @@ public class Sport extends NamedEntity implements Serializable {
         return net.shnee.bitys.model.Entity.removeAll(Sport.class);
     }
 
-    /**
-     * java.lang.Object.toString() but with more details.
-     * @return Returns a detailed String representation of the Sport.
-     */
-    public String toStringDetailed() {
+    @Override
+    public String toDetailedString() {
         return "Sport: id=" + this.getId() + ", name=" + this.getName();
     }
 

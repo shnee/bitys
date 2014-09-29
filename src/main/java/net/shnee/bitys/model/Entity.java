@@ -190,7 +190,7 @@ abstract public class Entity implements Serializable {
      * private fields.
      * @return Returns a detailed represention of the Entity as a String.
      */
-    public String getDetailedString() {
+    public String toDetailedString() {
         return this.toString();
     }
 
