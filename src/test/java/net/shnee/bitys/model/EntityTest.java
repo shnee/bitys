@@ -42,6 +42,7 @@ public class EntityTest {
 
     @Before
     public void setUp() {
+        Entity.removeAll(this.clazz);
     }
 
     @After
@@ -66,8 +67,6 @@ public class EntityTest {
         List entitiesRetrieved = Entity.getAll(this.entity.getClass());
         assertEquals(entities, entitiesRetrieved);
     }
-
-    // TODO See if you can use reflection to run Sports.getAll()
 
     /**
      * Test of getId method, of class Entity.
@@ -94,6 +93,50 @@ public class EntityTest {
         instance.setId(id);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+    
+    /**
+     * Test equals method, of class Entity.
+     */
+    @Test
+    public void testEquals() {
+        Entity ent1 = new EntityImpl();
+        Entity ent2 = new EntityImpl();
+        String str = "Not an Entity";
+        
+        assertEquals(ent1, ent2);
+        ent1.setId(13);
+        assertNotEquals(ent1, ent2);
+        ent2.setId(13);
+        assertEquals(ent1, ent2);
+        assertNotEquals(ent1, str);
+        assertEquals(ent1, ent1);
+    }
+
+    /**
+     * Test the Entity part of the equals() method defined within the derived
+     * classes.
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException 
+     */
+    @Test
+    public void testClassEquals() throws InstantiationException,
+                                         IllegalAccessException, 
+                                         IllegalArgumentException, 
+                                         InvocationTargetException {
+        Entity ent1 = (Entity) this.ctor.newInstance();
+        Entity ent2 = (Entity) this.ctor.newInstance();
+        String str = "Not a bitys object";
+        
+        assertEquals(ent1, ent2);
+        ent1.setId(13);
+        assertNotEquals(ent1, ent2);
+        ent2.setId(13);
+        assertEquals(ent1, ent2);
+        assertNotEquals(ent1, str);
+        assertEquals(ent1, ent1);
     }
 
     public class EntityImpl extends Entity {
