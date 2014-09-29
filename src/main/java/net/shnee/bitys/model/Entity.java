@@ -42,7 +42,7 @@ abstract public class Entity implements Serializable {
     public Entity(Integer id) {
         this.id = id;
     }
-  
+
     /**
      * Saves the given object.
      * @param obj The object to be saved.
@@ -51,13 +51,13 @@ abstract public class Entity implements Serializable {
     public static Integer saveOrUpdate(Entity entity) {
         Session session = null;
         Transaction tx = null;
-        
+
         try {
             session = Db.getInstance().createSession();
             tx = session.beginTransaction();
-            
+
             session.saveOrUpdate(entity);
-            
+
             tx.commit();
         } catch(HibernateException ex) {
             // TODO add logging statement
@@ -115,6 +115,34 @@ abstract public class Entity implements Serializable {
             if(session != null) { session.close(); }
         }
         return list;
+    }
+
+    /**
+     * Get the object with the given id and of the given type.
+     * @param <T> Type of the object to retrieve.
+     * @param type Type of the object to retrieve.
+     * @param id Id of the object to retrieve.
+     * @return Returns the saved object with the given id of the given type.
+     */
+    public static <T> T getById(Class<T> type, Integer id) {
+        Session session = null;
+        Transaction tx  = null;
+        List<T> list    = null;
+        try {
+            session = Db.getInstance().createSession();
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from " + type.getName() +
+                                              " where id = :id");
+            query.setParameter("id", id);
+            list = query.list();
+            tx.commit();
+        } catch(HibernateException ex) {
+            // TODO add logging statements
+            tx.rollback();
+        } finally {
+            if(session != null) { session.close(); }
+        }
+        return list.get(id);
     }
 
     /**

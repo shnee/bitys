@@ -44,6 +44,7 @@ public class NamedEntity extends Entity {
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }
@@ -65,7 +66,7 @@ public class NamedEntity extends Entity {
      * @param <T>  Type of objects to retrieve.
      * @param type Type of objects to retrieve.
      * @param name Name of objects to retrieve.
-     * @return Reurns a list of saved objects of type type and name name.
+     * @return Returns a list of saved objects of type type and name name.
      */
     public static <T> List<T> getByName(Class<T> type, String name) {
         Session session = null;
