@@ -14,10 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-// TODO Implement EntityTest
-
 /**
- *
+ * Unit tests for the Entity class.
  */
 @RunWith(Parameterized.class)
 public class EntityTest {
@@ -32,14 +30,6 @@ public class EntityTest {
         this.ctor = clazz.getConstructor();
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
     @Before
     public void setUp() {
         Entity.removeAll(this.clazz);
@@ -49,7 +39,25 @@ public class EntityTest {
     public void tearDown() {
     }
 
-    // TODO add test for saveAndUpdate and saveAndUpdateAll.
+    /**
+     *
+     */
+    public void testSaveOrUpdate() {
+        // create a collection with one instance
+        // create a Entity with the instance constructor
+        // Get all the saved entities.
+        // Check that there's only one.
+        // Store this retrieved entity under a new Entity object.
+        // Save the new entity.
+        // Get all the saved entities.
+        // Verify that there are two and that this list contains the one we created.
+        // Modify the entity that we originally retrieved.
+        // Get all the saved entities again.
+        // assert that our changed entity is not contained in the retrieved entities.
+        // Call saveOrUpdate on the changed entity
+        // get all saved objects
+        // assert that our changed entity is contiained in the retrieved entities.
+    }
 
     /**
      * Test of getAll method, of class Entity.
