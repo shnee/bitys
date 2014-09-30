@@ -123,6 +123,7 @@ abstract public class Entity implements Serializable {
      * @param type Type of the object to retrieve.
      * @param id Id of the object to retrieve.
      * @return Returns the saved object with the given id of the given type.
+     *         Returns null if the object doesn't exist.
      */
     public static <T> T getById(Class<T> type, Integer id) {
         Session session = null;
@@ -139,10 +140,11 @@ abstract public class Entity implements Serializable {
         } catch(HibernateException ex) {
             // TODO add logging statements
             tx.rollback();
+            return null;
         } finally {
             if(session != null) { session.close(); }
         }
-        return list.get(id);
+        return (list.size() > 0 ? list.get(0) : null);
     }
 
     /**
