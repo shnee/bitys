@@ -49,6 +49,8 @@ public class EntityTest {
     public void tearDown() {
     }
 
+    // TODO add test for saveAndUpdate and saveAndUpdateAll.
+
     /**
      * Test of getAll method, of class Entity.
      */
@@ -69,7 +71,7 @@ public class EntityTest {
         List entitiesRetrieved = Entity.getAll(this.clazz);
         assertEquals(entities, entitiesRetrieved);
     }
-    
+
     /**
      * Test getById method, of cass Entity.
      */
@@ -86,18 +88,18 @@ public class EntityTest {
 
         Entity.saveOrUpdateAll(entities);
         List retrieved = Entity.getAll(this.clazz);
-        
+
         Entity ent1 = (Entity) retrieved.get(0);
         Entity ent2 = (Entity) retrieved.get(1);
         Entity ent3 = (Entity) retrieved.get(2);
-        
+
         assertEquals(ent1, Entity.getById(this.clazz, ent1.getId()));
         assertEquals(ent2, Entity.getById(this.clazz, ent2.getId()));
         assertEquals(ent3, Entity.getById(this.clazz, ent3.getId()));
-        
+
         assertEquals(null, Entity.getById(this.clazz, 13));
     }
-    
+
     /**
      * Tests the removeAll method, of class Entity.
      */
@@ -126,7 +128,7 @@ public class EntityTest {
     @Test
     public void testSetAndGetId() {
         Entity ent = new EntityImpl();
-        
+
         assertEquals(new Integer(-1), ent.getId());
         ent.setId(68);
         assertEquals(new Integer(68), ent.getId());
