@@ -1,9 +1,6 @@
 package net.shnee.bitys.model;
 
 import org.slf4j.LoggerFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,37 +11,15 @@ import static org.junit.Assert.*;
  */
 public class SportTest {
 
-    private SessionFactory sessionFactory;
-    private Session session = null;
-
     public SportTest() {
     }
 
     @Before
     public void setUp() {
-
-        /* TODO create class for this code, it will be used in all model unit
-         * tests. */
-        // TODO This code needs to be moved to a unit test for dao
-
-        // setup the session factory
-        AnnotationConfiguration configuration = new AnnotationConfiguration();
-        configuration.addAnnotatedClass(Sport.class);
-        configuration.setProperty("hibernate.dialect",
-                                  "org.hibernate.dialect.H2Dialect");
-        configuration.setProperty("hibernate.connection.driver_class",
-                                  "org.h2.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-
-        this.sessionFactory = configuration.buildSessionFactory();
-        this.session = sessionFactory.openSession();
     }
 
     @After
     public void tearDown() {
-        this.session.close();
-        this.sessionFactory.close();
     }
 
     /**
@@ -56,7 +31,7 @@ public class SportTest {
                       debug("testToStringDetailed");
         Sport sport = new Sport(1, "Football");
         String expResult = "Sport: id=1, name=Football";
-        String result = sport.toStringDetailed();
+        String result = sport.toDetailedString();
         assertEquals(expResult, result);
     }
 
@@ -88,5 +63,9 @@ public class SportTest {
 
         sport.setName("New Name");
         assertEquals("New Name", sport.getName());
+    }
+
+    @Test
+    public void testPersistence() {
     }
 }
