@@ -1,5 +1,6 @@
 package net.shnee.bitys.model;
 
+import java.util.Set;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -40,23 +41,65 @@ public class EntityTest {
     }
 
     /**
-     *
+     * Test the saveOrUpdateAll method, of class Entity.
      */
-    public void testSaveOrUpdate() {
-        // create a collection with one instance
-        // create a Entity with the instance constructor
+    @Test
+    public void testSaveOrUpdate() throws InstantiationException,
+                                          IllegalAccessException,
+                                          IllegalArgumentException,
+                                          InvocationTargetException {
+        // Create a collection with one instance and save them.
+        Collection entities = Arrays.asList(this.ctor.newInstance());
+        Entity.saveOrUpdateAll(entities);
+
+        Entity created = (Entity) this.ctor.newInstance();
+
         // Get all the saved entities.
+        List saved = Entity.getAll(this.clazz);
+
         // Check that there's only one.
-        // Store this retrieved entity under a new Entity object.
+        assertEquals(1, saved.size());
+
+        Entity retrieved = (Entity) saved.get(0);
+
         // Save the new entity.
+        Entity.saveOrUpdate(created);
+
         // Get all the saved entities.
-        // Verify that there are two and that this list contains the one we created.
+        saved = Entity.getAll(this.clazz);
+
+        /* Verify that there are two and that this list contains the one we
+         * created. */
+        assertEquals(2, saved.size());
+        assertTrue(saved.contains(created));
+
         // Modify the entity that we originally retrieved.
+        retrieved.setId(1313);
+        
+        // TODO START
+        Sport sport = (Sport) retrieved;
+        sport.setName("Test");
+        Entity.saveOrUpdate(sport);
+        
+
         // Get all the saved entities again.
-        // assert that our changed entity is not contained in the retrieved entities.
-        // Call saveOrUpdate on the changed entity
-        // get all saved objects
-        // assert that our changed entity is contiained in the retrieved entities.
+        saved = Entity.getAll(this.clazz);
+
+        // Make sure there's still just 2 entities saved.
+        assertEquals(2, saved.size());
+
+        /* Assert that our changed entity is not contained in the retrieved
+         * entities. */
+        assertFalse(saved.contains(retrieved));
+
+        // Call saveOrUpdate on the changed entity.
+        Entity.saveOrUpdate(retrieved);
+
+        // Get all saved objects.
+        saved = Entity.getAll(this.clazz);
+
+        // Assert that our changed entity is contiained in the saved entities.
+        assertTrue(saved.contains(retrieved));
     }
 
     /**
