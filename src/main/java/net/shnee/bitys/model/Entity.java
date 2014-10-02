@@ -80,14 +80,21 @@ abstract public class Entity implements Serializable {
         Session session = null;
         Transaction tx  = null;
 
-        session = Db.getInstance().createSession();
-        tx = session.beginTransaction();
-        for(T entity : entities) {
-            session.saveOrUpdate(entity);
-            numSaved++;
+        try {
+            session = Db.getInstance().createSession();
+            tx = session.beginTransaction();
+            for(T entity : entities) {
+                session.saveOrUpdate(entity);
+                numSaved++;
+            }
+            tx.commit();
+        } catch(HibernateException ex) {
+            // TODO add logging statement
+            tx.rollback();
+            return -1;
+        } finally {
+            if(session != null) { session.close(); }
         }
-        tx.commit();
-        session.close();
 
         return numSaved;
     }
