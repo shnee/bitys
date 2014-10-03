@@ -38,7 +38,8 @@ public class EntityTest {
     }
 
     /**
-     * Test the saveOrUpdateAll method, of class Entity.
+     * Test the saveOrUpdate method, of class Entity. This test pretty much
+     * just test saving an Entity because we cannot update the id.
      */
     @Test
     public void testSaveOrUpdate() throws InstantiationException,
@@ -57,8 +58,6 @@ public class EntityTest {
         // Check that there's only one.
         assertEquals(1, saved.size());
 
-        Entity retrieved = (Entity) saved.get(0);
-
         // Save the new entity.
         Entity.saveOrUpdate(created);
 
@@ -69,34 +68,40 @@ public class EntityTest {
          * created. */
         assertEquals(2, saved.size());
         assertTrue(saved.contains(created));
+    }
 
-        // Modify the entity that we originally retrieved.
-        retrieved.setId(1313);
-        
-        // TODO START
-        Sport sport = (Sport) retrieved;
-        sport.setName("Test");
-        Entity.saveOrUpdate(sport);
-        
+    /**
+     * Test the saveOrUpdateAll method, of class Entity. This test pretty much
+     * just test saving an Entity because we cannot update the id.
+     */
+    @Test
+    public void testSaveOrUpdateAll() throws InstantiationException,
+                                          IllegalAccessException,
+                                          IllegalArgumentException,
+                                          InvocationTargetException {
+        // Create a collection with one instance and save them.
+        Collection entities = Arrays.asList(this.ctor.newInstance());
+        Entity.saveOrUpdateAll(entities);
+        Collection created = Arrays.asList(this.ctor.newInstance(),
+                                           this.ctor.newInstance(),
+                                           this.ctor.newInstance());
 
-        // Get all the saved entities again.
+        // Get all the saved entities.
+        List saved = Entity.getAll(this.clazz);
+
+        // Check that there's only one.
+        assertEquals(1, saved.size());
+
+        // Save the new entity.
+        Entity.saveOrUpdateAll(created);
+
+        // Get all the saved entities.
         saved = Entity.getAll(this.clazz);
 
-        // Make sure there's still just 2 entities saved.
-        assertEquals(2, saved.size());
-
-        /* Assert that our changed entity is not contained in the retrieved
-         * entities. */
-        assertFalse(saved.contains(retrieved));
-
-        // Call saveOrUpdate on the changed entity.
-        Entity.saveOrUpdate(retrieved);
-
-        // Get all saved objects.
-        saved = Entity.getAll(this.clazz);
-
-        // Assert that our changed entity is contiained in the saved entities.
-        //assertTrue(saved.contains(retrieved));
+        /* Verify that there are two and that this list contains the one we
+         * created. */
+        assertEquals(4, saved.size());
+        assertTrue(saved.containsAll(created));
     }
 
     /**
