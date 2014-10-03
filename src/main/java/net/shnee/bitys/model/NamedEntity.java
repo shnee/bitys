@@ -22,26 +22,16 @@ public class NamedEntity extends Entity {
     private String name;
 
     /**
-     * Create a new NamedEntity with an empty string for the name and -1 for the
-     * id.
+     * Create a new NamedEntity with an empty string for the name and null for
+     * the id.
      */
-    public NamedEntity() { this(-1, ""); }
+    public NamedEntity() { this(""); }
 
     /**
-     * Creates a new NamedEntity with the given name and an id of -1.
+     * Creates a new NamedEntity with the given name and null for the id.
      * @param name Name for the NamedEntity.
      */
-    public NamedEntity(String name) { this(-1, name); }
-
-    /**
-     * Creates a new NamedEntity with the given id and name.
-     * @param id   Unique identifier of the NamedEntity.
-     * @param name Name for the NamedEntity.
-     */
-    public NamedEntity(Integer id, String name) {
-        super(id);
-        this.name = name;
-    }
+    public NamedEntity(String name) { this.name = name; }
 
     @Override
     public String toString() {
@@ -66,6 +56,7 @@ public class NamedEntity extends Entity {
      * @param type Type of objects to retrieve.
      * @param name Name of objects to retrieve.
      * @return Returns a list of saved objects of type type and name name.
+     *         Returns null if there was an error.
      */
     public static <T> List<T> getByName(Class<T> type, String name) {
         Session session = null;
@@ -82,18 +73,11 @@ public class NamedEntity extends Entity {
         } catch(HibernateException ex) {
             // TODO add logging statements
             tx.rollback();
+            return null;
         } finally {
             if(session != null) { session.close(); }
         }
         return list;
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().
-                   appendSuper(super.hashCode()).
-                   append(name).
-                   toHashCode();
     }
 
     @Override

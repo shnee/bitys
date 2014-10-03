@@ -28,25 +28,16 @@ abstract public class Entity implements Serializable {
     private Integer id;
 
     /**
-     * Empty constructor. Assigns a negative value to id. The id of a saved
-     * entity can never be negative.
+     * Empty constructor.
      */
     public Entity() {
-        this(-1);
-    }
-
-    /**
-     * Creates a new entity with a given identifier.
-     * @param id Identifier for newly created entity.
-     */
-    public Entity(Integer id) {
-        this.id = id;
+        this.id = null;
     }
 
     /**
      * Saves the given object.
      * @param obj The object to be saved.
-     * @return Returns generated identifier. Returns -1 if there was an error.
+     * @return Returns generated identifier. Returns null if there was an error.
      */
     public static Integer saveOrUpdate(Entity entity) {
         Session session = null;
@@ -62,7 +53,7 @@ abstract public class Entity implements Serializable {
         } catch(HibernateException ex) {
             // TODO add logging statement
             tx.rollback();
-            return -1;
+            return null;
         } finally {
             if(session != null) { session.close(); }
         }
@@ -73,7 +64,8 @@ abstract public class Entity implements Serializable {
      * Save or update all the objects in entities.
      * @param <T>      Type of the objcts in entities.
      * @param entities Objects to be saved or updated.
-     * @return Returns the number of objects saved or updated.
+     * @return Returns the number of objects saved or updated. Returns -1 if
+     *         there was an error.
      */
     public static <T> Integer saveOrUpdateAll(Collection<T> entities) {
         Integer numSaved = 0;
@@ -183,11 +175,11 @@ abstract public class Entity implements Serializable {
 
     /**
      * id setter.
-     * @param id The new identifier for this type. If this id is not unique for
-     *           this entity type then a new unique identifier will be assigned
-     *           when the entity is saved.
+     * @param id The new identifier for this type. This value will most likely
+     *        be changed when the entity is saved. This method should be used
+     *        for debugging anf testing.
      */
-    public void setId(Integer id) { this.id = id; }
+    protected void setId(Integer id) { this.id = id; }
 
     @Override
     public String toString() {
@@ -214,6 +206,7 @@ abstract public class Entity implements Serializable {
         if (obj == this) { return true; }
 
         Entity rhs = (Entity) obj;
+        if(this.id == null) { return false; }
         return new EqualsBuilder().append(this.id, rhs.id).isEquals();
     }
 }

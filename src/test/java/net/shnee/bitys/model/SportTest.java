@@ -29,8 +29,8 @@ public class SportTest {
     public void testToStringDeatiled() {
         LoggerFactory.getLogger("model." + SportTest.class.getSimpleName()).
                       debug("testToStringDetailed");
-        Sport sport = new Sport(1, "Football");
-        String expResult = "Sport: id=1, name=Football";
+        Sport sport = new Sport("Football");
+        String expResult = "Sport: id=null, name=Football";
         String result = sport.toDetailedString();
         assertEquals(expResult, result);
     }
@@ -42,7 +42,7 @@ public class SportTest {
     public void testToString() {
         LoggerFactory.getLogger("model." + SportTest.class.getSimpleName()).
                       debug("testToString");
-        Sport sport = new Sport(1, "Football");
+        Sport sport = new Sport("Football");
         String expResult = "Football";
         String result = sport.toString();
         assertEquals(expResult, result);

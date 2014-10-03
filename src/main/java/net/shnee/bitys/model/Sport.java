@@ -16,23 +16,15 @@ import javax.persistence.Table;
 public class Sport extends NamedEntity implements Serializable {
 
     /**
-     * Create a new Sport with an empty string for the name and -1 for the
-     * id.
+     * Create a new Sport with an empty string for the name and null for the id.
      */
     public Sport() { super(); }
 
     /**
-     * Creates a new Sport with the given name and an id of -1.
+     * Creates a new Sport with the given name and null for the id.
      * @param name Name for the Sport.
      */
     public Sport(String name) { super(name); }
-
-    /**
-     * Creates a new Sport with the given id and name.
-     * @param id   Unique identifier of the Sport.
-     * @param name Name for the Sport.
-     */
-    public Sport(Integer id, String name) { super(id, name); }
     
     // TODO add getById method.
     // TODO move common methods to parent classes as abstract methods.

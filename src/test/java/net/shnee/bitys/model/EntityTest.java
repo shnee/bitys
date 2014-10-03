@@ -1,6 +1,5 @@
 package net.shnee.bitys.model;
 
-import java.util.Set;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -9,9 +8,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runner.RunWith;
 import java.util.List;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -180,7 +177,7 @@ public class EntityTest {
     public void testSetAndGetId() {
         Entity ent = new EntityImpl();
 
-        assertEquals(new Integer(-1), ent.getId());
+        assertEquals(null, ent.getId());
         ent.setId(68);
         assertEquals(new Integer(68), ent.getId());
         ent.setId(54);
@@ -259,7 +256,7 @@ public class EntityTest {
         Entity ent2 = new EntityImpl();
         String str = "Not an Entity";
 
-        assertEquals(ent1, ent2);
+        assertNotEquals(ent1, ent2);
         ent1.setId(13);
         assertNotEquals(ent1, ent2);
         ent2.setId(13);
