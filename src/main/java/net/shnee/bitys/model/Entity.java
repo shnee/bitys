@@ -7,12 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import net.shnee.bitys.db.Db;
+import net.shnee.bitys.logger.BitysLogger;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.LoggerFactory;
 
 /**
  * Shared code for all of the entities in the bitys model.
@@ -48,10 +50,13 @@ abstract public class Entity implements Serializable {
             tx = session.beginTransaction();
 
             session.saveOrUpdate(entity);
-
+            BitysLogger.DB.debug("Saved {}", entity);
+            
             tx.commit();
         } catch(HibernateException ex) {
-            // TODO add logging statement
+            BitysLogger.DB.error("Error saving {}, ex: {}",
+                                 entity,
+                                 ex.getLocalizedMessage());
             tx.rollback();
             return null;
         } finally {
@@ -71,17 +76,21 @@ abstract public class Entity implements Serializable {
         Integer numSaved = 0;
         Session session = null;
         Transaction tx  = null;
+        T entity = null;
 
         try {
             session = Db.getInstance().createSession();
             tx = session.beginTransaction();
-            for(T entity : entities) {
+            for(T anEntity : entities) {
+                entity = anEntity;
                 session.saveOrUpdate(entity);
+                BitysLogger.DB.debug("{}, saved.", entity);
                 numSaved++;
             }
             tx.commit();
+            BitysLogger.DB.debug("Saved collection {}", entities);
         } catch(HibernateException ex) {
-            // TODO add logging statement
+            BitysLogger.DB.error("Error saving {}", entity);
             tx.rollback();
             return -1;
         } finally {
@@ -107,6 +116,7 @@ abstract public class Entity implements Serializable {
             Query query = session.createQuery("FROM " + type.getName());
             list = query.list();
             tx.commit();
+            BitysLogger.DB.debug("Retrieved ");
         } catch(HibernateException ex) {
             // TODO add logging statements
             tx.rollback();
