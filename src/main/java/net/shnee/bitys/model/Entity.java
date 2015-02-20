@@ -14,7 +14,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.slf4j.LoggerFactory;
 
 /**
  * Shared code for all of the entities in the bitys model.
@@ -51,7 +50,7 @@ abstract public class Entity implements Serializable {
 
             session.saveOrUpdate(entity);
             BitysLogger.DB.debug("Saved {}", entity);
-            
+
             tx.commit();
         } catch(HibernateException ex) {
             BitysLogger.DB.error("Error saving {}, ex: {}",
@@ -162,7 +161,7 @@ abstract public class Entity implements Serializable {
      * @param type Type of the objects to be deleted.
      * @return Returns the number of objects deleted.
      */
-    public static <T> Integer removeAll(Class<T> type) {
+    public static <T> Integer deleteAll(Class<T> type) {
         Session session = null;
         Transaction tx  = null;
         Integer numActions;
@@ -178,6 +177,31 @@ abstract public class Entity implements Serializable {
     }
 
     /**
+     * Delete an Entity by passing the class and id.
+     * @param type The type of instance to be deleted.
+     * @param id The id of the instance to be deleted.
+     * @return Returns true if the instance was deleted successfully, false
+     *         otherwise.
+     */
+    public static boolean deleteById(Class<?> type, Serializable id) {
+        Session session = null;
+        Transaction tx  = null;
+        boolean rv = false;
+
+        session = Db.getInstance().createSession();
+        tx = session.beginTransaction();
+        Object persistentInstance = session.load(type, id);
+        if (persistentInstance != null) {
+            session.delete(persistentInstance);
+            rv = true;
+        }
+        tx.commit();
+        session.close();
+
+        return rv;
+    }
+
+    /**
      * id getter.
      * @return Returns the unique identifier for this entity type.
      */
@@ -187,7 +211,7 @@ abstract public class Entity implements Serializable {
      * id setter.
      * @param id The new identifier for this type. This value will most likely
      *        be changed when the entity is saved. This method should be used
-     *        for debugging anf testing.
+     *        for debugging and testing.
      */
     protected void setId(Integer id) { this.id = id; }
 

@@ -60,7 +60,7 @@ public class Sport extends NamedEntity implements Serializable {
      * @return The number of Sports deleted.
      */
     public static Integer removeAll() {
-        return net.shnee.bitys.model.Entity.removeAll(Sport.class);
+        return net.shnee.bitys.model.Entity.deleteAll(Sport.class);
     }
 
     @Override

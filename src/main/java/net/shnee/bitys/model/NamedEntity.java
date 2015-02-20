@@ -1,6 +1,7 @@
 package net.shnee.bitys.model;
 
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import net.shnee.bitys.db.Db;
@@ -12,7 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 /**
- * Models an entiry with a name.
+ * Models an entity with a name.
  */
 @MappedSuperclass
 public class NamedEntity extends Entity {
@@ -21,17 +22,33 @@ public class NamedEntity extends Entity {
     @Column(length=50, nullable=false)
     private String name;
 
-    /**
-     * Create a new NamedEntity with an empty string for the name and null for
-     * the id.
-     */
-    public NamedEntity() { this(""); }
+    /** Abbreviation of the NamedEntity. */
+    @Column(length=10)
+    private String abbrev;
 
     /**
-     * Creates a new NamedEntity with the given name and null for the id.
+     * Create a new NamedEntity with an empty string for the name and
+     * abbreviation.
+     */
+    public NamedEntity() { this("", ""); }
+
+    /**
+     * Creates a new NamedEntity with the given name and an empty string for the
+     * abbreviation.
      * @param name Name for the NamedEntity.
      */
-    public NamedEntity(String name) { this.name = name; }
+    public NamedEntity(String name) { this(name, ""); }
+    
+    /** START HERE BY CREATING CONSTRUCTOR WITH ABBREV */
+    /**
+     * Creates a NamedEntity with the given name and abbreviation.
+     * @param name
+     * @param abbrev 
+     */
+    public NamedEntity(String name, String abbrev) {
+        this.name= name;
+        this.abbrev = abbrev;
+    }
 
     @Override
     public String toString() {
@@ -49,6 +66,18 @@ public class NamedEntity extends Entity {
      * @param name New name for NamedEntity.
      */
     public void setName(String name) { this.name = name; }
+
+        /**
+     * abbrev getter.
+     * @return Returns the abbrev of the NamedEntity.
+     */
+    public String getAbbrev() { return this.abbrev; }
+
+    /**
+     * abbrev setter.
+     * @param abbrev New abbrev for NamedEntity.
+     */
+    public void setAbbrev(String abbrev) { this.abbrev = abbrev; }
 
     /**
      * Return all saved objects of type type with name name.
@@ -89,7 +118,16 @@ public class NamedEntity extends Entity {
         return new EqualsBuilder().
                    appendSuper(super.equals(obj)).
                    append(this.name, rhs.name).
+                   append(this.abbrev, rhs.abbrev).
                    isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(13, 37).appendSuper(super.hashCode()).
+                                           append(this.name).
+                                           append(this.abbrev).
+                                           toHashCode();
     }
 
 }

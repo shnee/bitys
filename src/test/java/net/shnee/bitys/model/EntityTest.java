@@ -30,7 +30,7 @@ public class EntityTest {
 
     @Before
     public void setUp() {
-        Entity.removeAll(this.clazz);
+        Entity.deleteAll(this.clazz);
     }
 
     @After
@@ -154,7 +154,7 @@ public class EntityTest {
     }
 
     /**
-     * Tests the removeAll method, of class Entity.
+     * Tests the deleteAll method, of class Entity.
      */
     @Test
     public void testRemoveAll() throws InstantiationException,
@@ -170,7 +170,7 @@ public class EntityTest {
         Entity.saveOrUpdateAll(entities);
         Integer size = Entity.getAll(this.entity.getClass()).size();
         assertTrue(size > 0);
-        Entity.removeAll(this.clazz);
+        Entity.deleteAll(this.clazz);
         size = Entity.getAll(this.entity.getClass()).size();
         assertEquals(new Integer(0), size);
     }
